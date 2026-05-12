@@ -1,0 +1,46 @@
+#!/bin/bash
+# Tmux Config Template
+# Base configuration for .tmux.conf with TPM and plugins
+
+# Prefix key (change if needed)
+set -g prefix C-b
+unbind C-b
+bind C-b send-prefix
+
+# Windows and panes
+set -g base-index 1
+setw -g pane-base-index 1
+
+# Enable mouse support
+set -g mouse on
+
+# Vim keybindings
+setw -g mode-keys vi
+bind -T copy-mode-vi v send-keys -X begin-selection
+bind -T copy-mode-vi y send-keys -X copy-selection-and-cancel
+
+# Renumber windows on close
+set -g renumber-windows on
+
+# TPM Plugin Manager
+set -g @plugin 'tmux-plugins/tpm'
+set -g @plugin 'tmux-plugins/tmux-resurrect'
+set -g @plugin 'tmux-plugins/tmux-continuum'
+
+# Configure tmux-continuum
+set -g @continuum-save-interval '15'  # Auto-save every 15 minutes
+set -g @continuum-restore 'on'         # Auto-restore on tmux start
+set -g @continuum-boot 'on'            # Start tmux on boot if applicable
+
+# Configure tmux-resurrect
+set -g @resurrect-strategy-vim 'session'
+set -g @resurrect-strategy-nvim 'session'
+set -g @resurrect-capture-pane-contents 'on'
+
+# Status bar
+set -g status-position bottom
+set -g status-bg default
+set -g status-fg white
+
+# Initialize TPM (must be at the end)
+run '~/.tmux/plugins/tpm/tpm'
